@@ -1,0 +1,180 @@
+#include <stdio.h>
+
+typedef struct {
+    char id[5];
+    char name[50];
+    char type;
+    int priority;
+    int requiredAmount;
+} ProductInfo;
+
+void calculateRequiredAmount(int currentQuantity, int mustHaveAmount, char type, int *requiredAmount) {
+    // Define the ABC type priorities
+    const int PRIORITY_A = 1;
+    const int PRIORITY_B = 2;
+    const int PRIORITY_C = 3;
+
+    // Calculate the required amount for restocking
+    *requiredAmount = mustHaveAmount - currentQuantity;
+
+    // Print a message concerning ABC type
+    if (*requiredAmount > 0) {
+        printf("\nRestock required for product type %c (Priority %d)\n", type, *requiredAmount);
+    } else {
+        printf("\nNo restocking required for product type %c (Priority %d)\n", type, *requiredAmount);
+    }
+}
+
+int main() {
+    ProductInfo products[] = {
+        {"A001", "bread", 'A', 1, 200},
+        {"A002", "rice", 'A', 1, 150},
+        {"A003", "pasta", 'A', 2, 100},
+        {"A004", "flour", 'A', 1, 50},
+        {"A005", "meat", 'A', 2, 100},
+        {"A006", "chicken", 'A', 2, 80},
+        {"A007", "fish", 'A', 1, 70},
+        {"A008", "milk", 'A', 1, 100},
+        {"A009", "cheese", 'A', 2, 50},
+        {"A010", "ice cream", 'A', 1, 50},
+        {"A011", "fresh fruit", 'A', 1, -1},
+        {"A012", "fresh vegetables", 'A', 2, -1},
+        {"A013", "chocolate", 'A', 1, 50},
+        {"B014", "cake", 'B', 1, 30},
+        {"B015", "cookie", 'B', 2, 50},
+        {"B016", "corn flakes", 'B', 1, 20},
+        {"B017", "popcorn", 'B', 1, 10},
+        {"B018", "batter", 'B', 2, 30},
+        {"B019", "roll", 'B', 1, 50},
+        {"B020", "cracker", 'B', 1, 40},
+        {"B021", "biscuit", 'B', 2, 40},
+        {"B022", "toast", 'B', 1, 30},
+        {"B023", "pastry", 'B', 1, 30},
+        {"B024", "pie", 'B', 2, 20},
+        {"B025", "muffin", 'B', 1, 30},
+        {"B026", "pancake", 'B', 1, 40},
+        {"B027", "yogurt", 'B', 2, 50},
+        {"B028", "kefir", 'B', 1, 30},
+        {"B029", "sour milk", 'B', 1, 20},
+        {"B030", "buttermilk", 'B', 2, 20},
+        {"B031", "cream", 'B', 1, 20},
+        {"B032", "sour cream", 'B', 1, 30},
+        {"B033", "butter", 'B', 2, 20},
+        {"B034", "cottage cheese", 'B', 1, 30},
+        {"B035", "farmers' cheese", 'B', 1, 30},
+        {"B036", "homemade cheese", 'B', 2, 30},
+        {"B037", "cream cheese", 'B', 1, 20},
+        {"B038", "Swiss cheese", 'B', 1, 30},
+        {"B039", "Parmesan", 'B', 2, 20},
+        {"B040", "Cheddar", 'B', 1, 30},
+        {"B041", "Mozzarella", 'B', 1, 30},
+        {"B042", "Roquefort", 'B', 2, 20},
+        {"B043", "blue cheese", 'B', 1, 20},
+        {"B044", "fruit", 'B', 1, -1},
+        {"B045", "berries", 'B', 2, -1},
+        {"B046", "dried fruit", 'B', 1, 20},
+        {"B047", "nuts", 'B', 1, 20},
+        {"B048", "vegetables", 'B', 2, -1},
+        {"B049", "candy", 'B', 1, 30},
+        {"B050", "candies", 'B', 1, 30},
+        {"B051", "sweets", 'B', 2, 30},
+        {"B052", "caramels", 'B', 1, 20},
+        {"B053", "mint drops", 'B', 1, 20},
+        {"B054", "jelly beans", 'B', 2, 20},
+        {"B055", "lollipop", 'B', 1, 20},
+        {"B056", "bonbons", 'B', 1, 20},
+        {"B057", "chocolates", 'B', 2, 30},
+        {"B058", "chocolate candies", 'B', 1, 30},
+        {"B059", "chocolate", 'B', 1, 30},
+        {"B060", "chocolate bar", 'B', 2, 20},
+        {"B061", "candy bar", 'B', 1, 20},
+        {"B062", "taffy", 'B', 1, 20},
+        {"B063", "fudge", 'B', 2, 20},
+        {"B064", "marshmallow", 'B', 1, 20},
+        {"C065", "white bread", 'C', 1, 50},
+        {"C066", "whole-wheat bread", 'C', 2, 30},
+    {"C067", "rye bread", 'C', 1, 30},
+    {"C068", "raisin bread", 'C', 1, 20},
+    {"C069", "garlic bread", 'C', 2, 20},
+    {"C070", "sourdough bread", 'C', 1, 30},
+    {"C071", "French bread / French loaf", 'C', 1, 30},
+    {"C072", "pita bread", 'C', 2, 30},
+    {"C073", "tortilla", 'C', 1, 30},
+    {"C074", "sesame roll", 'C', 1, 30},
+    {"C075", "poppy seed roll", 'C', 2, 30},
+    {"C076", "cinnamon roll", 'C', 1, 20},
+    {"C077", "crescent roll / croissant", 'C', 1, 20},
+    {"C078", "bagel", 'C', 2, 30},
+    {"C079", "hamburger bun", 'C', 1, 50},
+    {"C080", "hot dog bun", 'C', 1, 50},
+    {"C081", "cracker", 'C', 2, 40},
+    {"C082", "biscuit", 'C', 1, 40},
+    {"C083", "toast", 'C', 1, 30},
+    {"C084", "breadstick", 'C', 2, 40},
+    {"C085", "pretzel", 'C', 1, 20},
+    {"C086", "hardtack / ship biscuit", 'C', 1, 20},
+    {"C087", "wafer", 'C', 2, 20},
+    {"C088", "waffle", 'C', 1, 30},
+    {"C089", "crouton", 'C', 1, 20},
+    {"C090", "birthday cake", 'C', 2, 20},
+    {"C091", "wedding cake", 'C', 1, 20},
+    {"C092", "Christmas cake", 'C', 1, 20},
+    {"C093", "fruitcake", 'C', 2, 20},
+    {"C094", "shortcake", 'C', 1, 20},
+    {"C095", "strawberry shortcake", 'C', 1, 20},
+    {"C096", "chocolate cake", 'C', 2, 20},
+    {"C097", "chocolate chip cake", 'C', 1, 20},
+    {"C098", "chocolate layer cake", 'C', 1, 20},
+    {"C099", "chocolate frosting cake", 'C', 2, 20},
+    {"C100", "honey cake", 'C', 1, 20},
+    {"C101", "pound cake", 'C', 2, 20},
+    {"C102", "almond cake", 'C', 1, 20},
+    {"C103", "napoleon", 'C', 1, 20},
+    {"C104", "sponge cake", 'C', 2, 20},
+    {"C105", "cheesecake", 'C', 1, 20},
+    {"C106", "lemon cake", 'C', 1, 20},
+    {"C107", "torte", 'C', 2, 20},
+    {"C108", "gingerbread", 'C', 1, 20},
+    {"C109", "coffee cake", 'C', 1, 20},
+    {"C110", "raisin cupcake", 'C', 2, 20},
+    {"C111", "fudge brownie", 'C', 1, 20},
+    {"C112", "oatmeal cookie", 'C', 1, 30},
+    {"C113", "chocolate cookie", 'C', 2, 30},
+    {"C114", "pie", 'C', 1, 20},
+    {"C115", "apple pie", 'C', 1, 20},
+    {"C116", "blueberry pie", 'C', 2, 20},
+    {"C117", "cherry pie", 'C', 1, 20},
+    {"C118", "homemade pie", 'C', 1, 20},
+    };
+
+    char productId[5];
+    int currentQuantity;
+
+    printf("Enter the ID of the product: ");
+    scanf("%s", productId);
+
+    // Find the product in the list
+    int found = 0;
+    int requiredAmount = 0;
+    char type;
+    for (int i = 0; i < sizeof(products) / sizeof(products[0]); i++) {
+        if (strcmp(products[i].id, productId) == 0) {
+            found = 1;
+            type = products[i].type;
+
+            printf("Enter the current quantity in the store: ");
+            scanf("%d", &currentQuantity);
+
+            calculateRequiredAmount(currentQuantity, products[i].requiredAmount, type, &requiredAmount);
+
+            break;
+        }
+    }
+
+    // Print a message if the product ID is not found
+    if (!found) {
+        printf("Product with ID %s not found.\n", productId);
+    }
+
+    return 0;
+}
